@@ -7,7 +7,7 @@ library(tidyverse)
 
 # ==== Load Processed Data ====
 skills <- read_csv("/workspaces/DS520-Team-Project/data/processed/top_skills.csv")
-clusters <- read_csv("/workspaces/DS520-Team-Project/data/processed/skill_clusters.csv")
+clusters <- read_csv("/workspaces/DS520-Team-Project/data/processed/skill_clusters1.csv")
 
 # ==== Hypothetical Supply Data (Survey / Census) ====
 supply_data <- tibble(

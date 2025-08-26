@@ -76,7 +76,7 @@ while (start_row < total_rows) {
 
 # ==== Save Extracted Skills ====
 write.csv(skills_count, output_file, row.names = FALSE)
-cat("✅ Top skills saved to", output_file, "\n")
+cat("Top skills saved to", output_file, "\n")
 
 # ==== Visualization: Top 15 In-demand Skills ====
 if (nrow(skills_count) > 0) {
@@ -94,7 +94,7 @@ if (nrow(skills_count) > 0) {
     theme_minimal()
 
   ggsave(plot_output_file, plot, width = 8, height = 6, units = "in")
-  cat("✅ Plot saved to", plot_output_file, "\n")
+  cat("Plot saved to", plot_output_file, "\n")
 
   print(plot) # Display the plot in the notebook output
 }

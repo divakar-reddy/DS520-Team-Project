@@ -26,4 +26,4 @@ df_clean <- df_clean %>%
 # ==== Save Clean Data ====
 write_csv(df_clean, "/workspaces/DS520-Team-Project/data/processed/cleaned_postings.csv")
 
-message("✅ Data cleaning completed successfully!")
+message("Data cleaning completed successfully!")

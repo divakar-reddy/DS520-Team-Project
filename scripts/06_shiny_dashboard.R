@@ -19,7 +19,7 @@ top_skills <- skills_df %>%
   arrange(desc(n))
 
 # Load Skill Clusters
-clusters_path <- "/workspaces/DS520-Team-Project/data/processed/skill_clusters.csv"
+clusters_path <- "/workspaces/DS520-Team-Project/data/processed/skill_clusters1.csv"
 clusters_df <- if (file.exists(clusters_path)) {
   read_csv(clusters_path, show_col_types = FALSE)
 } else {
@@ -37,7 +37,7 @@ demand_gap_df <- if (file.exists(demand_gap_path)) {
 # ==== UI ====
 ui <- dashboardPage(
   dashboardHeader(title = "Skill Demand Dashboard"),
-  
+
   dashboardSidebar(
     sidebarMenu(
       menuItem("Top Skills", tabName = "top_skills", icon = icon("chart-bar")),
@@ -46,7 +46,7 @@ ui <- dashboardPage(
       menuItem("Raw Data", tabName = "data", icon = icon("table"))
     )
   ),
-  
+
   dashboardBody(
     tabItems(
       # ---- Tab 1: Top Skills ----
@@ -60,7 +60,7 @@ ui <- dashboardPage(
                     DTOutput("skills_table"))
               )
       ),
-      
+
       # ---- Tab 2: Skill Clusters ----
       tabItem(tabName = "clusters",
               conditionalPanel(
@@ -79,7 +79,7 @@ ui <- dashboardPage(
                 h3("Clustering results not found. Please run 03_skill_clustering.R first.")
               )
       ),
-      
+
       # ---- Tab 3: Demand-Supply Gap ----
       tabItem(tabName = "demand_gap",
               conditionalPanel(
@@ -98,7 +98,7 @@ ui <- dashboardPage(
                 h3("Demand-Supply data not found.")
               )
       ),
-      
+
       # ---- Tab 4: Raw Data ----
       tabItem(tabName = "data",
               fluidRow(
@@ -112,17 +112,17 @@ ui <- dashboardPage(
 
 # ==== Server ====
 server <- function(input, output, session) {
-  
+
 # ---- Top Skills Plot ----
 output$plot_top_skills <- renderPlotly({
   top_15 <- top_skills %>% slice(1:15)
-  
+
   p <- ggplot(top_15, aes(x = reorder(word, n), y = n)) +
     geom_col(fill = "#2E86AB") +
     coord_flip() +
     labs(title = "Top 15 Skills in Demand", x = "Skill", y = "Frequency") +
     theme_minimal()
-  
+
   ggplotly(p)
 })
 
@@ -130,11 +130,11 @@ output$plot_top_skills <- renderPlotly({
 output$skills_table <- renderDT({
   datatable(top_skills, options = list(pageLength = 15))
 })
-  
+
   # ---- Skill Clusters ----
   output$has_clusters <- reactive({ !is.null(clusters_df) })
   outputOptions(output, "has_clusters", suspendWhenHidden = FALSE)
-  
+
   output$plot_clusters <- renderPlotly({
     req(clusters_df)
     p <- ggplot(clusters_df, aes(x = cluster, fill = cluster)) +
@@ -143,16 +143,16 @@ output$skills_table <- renderDT({
       theme_minimal()
     ggplotly(p)
   })
-  
+
   output$clusters_table <- renderDT({
     req(clusters_df)
     datatable(clusters_df, options = list(pageLength = 15))
   })
-  
+
   # ---- Demand-Supply Gap ----
   output$has_demand_gap <- reactive({ !is.null(demand_gap_df) })
   outputOptions(output, "has_demand_gap", suspendWhenHidden = FALSE)
-  
+
   output$plot_demand_gap <- renderPlotly({
     req(demand_gap_df)
     p <- ggplot(demand_gap_df, aes(x = reorder(word, gap), y = gap)) +
@@ -162,12 +162,12 @@ output$skills_table <- renderDT({
       theme_minimal()
     ggplotly(p)
   })
-  
+
   output$demand_gap_table <- renderDT({
     req(demand_gap_df)
     datatable(demand_gap_df, options = list(pageLength = 15))
   })
-  
+
   # ---- Raw Data Table ----
   output$raw_data <- renderDT({
     datatable(skills_df, options = list(pageLength = 15))
